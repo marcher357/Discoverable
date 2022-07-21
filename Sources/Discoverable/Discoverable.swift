@@ -33,6 +33,9 @@ public protocol DiscoverableDelegate {
     /// Updates the connection strength
     /// - Parameter strength: Strength percentage
     func connectionStrength(strength: Float)
+    /// Updates when message received
+    /// - Parameter message: received message
+    func didReceive(message: String, data: NSData)
 }
 
 /**
@@ -250,6 +253,9 @@ public class Discoverable: NSObject {
                     let percent: Float = (self.received / self.sent) * 100
                     
                     print(" > Received: \(data as NSData) string: \(message) -- \(self.calculateStrength(rate: percent))% successfull transmission")
+                    
+                    //write message to the delegate
+                    self.delegate?.didReceive(message: message, data: data)
                 }
 
                 self.listen(on: connection)
